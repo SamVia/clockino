@@ -8,9 +8,10 @@ days = ["Mon", "Tue", "Wed", "Thu", "Fry", "Sat", "Sun"]
 link_gif = "https://f8n-production.s3.us-east-2.amazonaws.com/collections/awzn1l17u-beach%20relax-export.gif"
 color = "black"
 
-
-
-
+st.set_page_config(
+  page_title="Clock",
+  page_icon="🕔"
+)
 
 
 time_now = time.localtime()
