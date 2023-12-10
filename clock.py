@@ -31,7 +31,7 @@ dt = datetime.now(zoneinfo)
 time_to_print = dt.strftime("%H:%M:%S")
 date_to_print = dt.strftime("%a %d/%m/%Y")
     
-st.title(f"")
+st.title("Clock")
 
 hide_st_style = """
     <style>
