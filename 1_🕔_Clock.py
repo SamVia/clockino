@@ -2,7 +2,7 @@ import streamlit as st
 import time
 from zoneinfo import ZoneInfo
 from datetime import datetime
-
+import base64
 
 st.set_page_config(
   page_title="Clock",
@@ -15,11 +15,15 @@ st.set_page_config(
 #link_gif = "https://www.icegif.com/wp-content/uploads/snow-icegif-29.gif" 
 #link_gif = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a2205e2c-52eb-46b3-89fb-bd0fd5da780e/dbyn08r-83e1c070-bfa6-48da-ae25-b7d7409639fe.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2EyMjA1ZTJjLTUyZWItNDZiMy04OWZiLWJkMGZkNWRhNzgwZVwvZGJ5bjA4ci04M2UxYzA3MC1iZmE2LTQ4ZGEtYWUyNS1iN2Q3NDA5NjM5ZmUuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.pFhMtU06SUSgNo6CA5fLFNJlv9h69s9oE89E2E6iAGk"
 #phone
-link_gif = "https://media.wallpaperchill.com/1080x2400-wallpapers/1080x2400-hd-wallpaper-s181.jpg"
+#link_gif = "https://media.wallpaperchill.com/1080x2400-wallpapers/1080x2400-hd-wallpaper-s181.jpg"
 #link_gif = "https://f8n-production.s3.us-east-2.amazonaws.com/collections/awzn1l17u-beach%20relax-export.gif"
 
+def get_image_data_url(img_bytes):
+    encoded = base64.b64encode(img_bytes).decode()
+    return f"data:image/png;base64,{encoded}"
 
-
+if "image" not in st.session_state:
+    st.session_state.image = "https://f8n-production.s3.us-east-2.amazonaws.com/collections/awzn1l17u-beach%20relax-export.gif"
 
 if "timezone" not in st.session_state:
     st.session_state.timezone = "Europe/Rome"    
@@ -70,7 +74,7 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 page_bg_img = f"""
 <style>
 [data-testid="stAppViewContainer"] > .main {{
-background-image: url({link_gif});
+background-image: url({st.session_state.image});
 background-size: 100% auto;
 background-position: center center;
 background-repeat: no-repeat;
