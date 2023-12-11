@@ -2,22 +2,14 @@ import streamlit as st
 import time
 from zoneinfo import ZoneInfo, available_timezones
 from datetime import datetime
-from st_pages import Page, add_page_title, show_pages
+
 
 st.set_page_config(
   page_title="Clock",
   page_icon="🕔"
 )
 
-show_pages(
-    [
-        Page("clock.py", "Clock", "🕔"),
-        # Can use :<icon-name>: or the actual icon
-        Page("pages/settings.py", "Settings", "⚙️")
-        # The pages appear in the order you pass them
-        
-    ]
-)
+
 
 
 #link_gif = "https://www.icegif.com/wp-content/uploads/snow-icegif-29.gif" 
