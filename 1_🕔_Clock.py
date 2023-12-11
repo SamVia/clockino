@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from zoneinfo import ZoneInfo, available_timezones
+from zoneinfo import ZoneInfo
 from datetime import datetime
 
 
@@ -20,10 +20,6 @@ color = "white"
 #color = "black"
 
 
-if "timezones" not in st.session_state:
-    timezones = available_timezones()
-    filtered_time_zones = [tz for tz in timezones if "/" in tz and "Etc" not in tz]
-    st.session_state.timezones = filtered_time_zones.sort()
 
 if "timezone" not in st.session_state:
     st.session_state.timezone = "Europe/Rome"    
