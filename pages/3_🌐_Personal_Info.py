@@ -1,14 +1,15 @@
 import streamlit as st
 
 st.set_page_config(
-  page_title="Clock",
-  page_icon="🕔"
+  page_title="Pomodoro",
+  page_icon="🍅"
 )
 
 def button_logo(site, logo, circle):
     if circle: circle = "border-radius:50%;"
     else: circle = ""
-    return f"""<style>
+    return f"""
+<style>
     .myButton {{
         background-color: transparent;
         color: white;
@@ -25,19 +26,19 @@ def button_logo(site, logo, circle):
         outline: none;
         position:relative;
         left:-20px
-        }}
+    }}
 
     .myButton:hover {{
         transform: scale(1.1);
-        }}
-    </style>
+    }}
+</style>
 
-    <a href="{site}" target="_blank">
-        <button class="myButton">
-            <img src="{logo}" alt="Image description" style="width:50px;height:50px;{circle}">
-        </button>
-    </a>
-    """
+<a href="{site}" class="myButton" target="_blank">
+    <button class="myButton">
+        <img src="{logo}" alt="Image description" style="width:50px;height:50px;{circle}">
+    </button>
+</a>
+"""
 
 st.title("Credits")
 
@@ -116,3 +117,8 @@ with col3:
         st.markdown(button_logo("","https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/640px-LinkedIn_logo_initials.png",False), unsafe_allow_html=True)
     with columns[3]:
         st.markdown(button_logo("","https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",True), unsafe_allow_html=True)
+
+
+
+
+
