@@ -22,6 +22,9 @@ def get_image_data_url(img_bytes):
     encoded = base64.b64encode(img_bytes).decode()
     return f"data:image/png;base64,{encoded}"
 
+def music_player(id):
+    return f"""<iframe style="display:none;" width="560" height="315" src="https://www.youtube.com/embed/{id}?autoplay=1&loop=1&playlist={id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>"""
+
 if "image" not in st.session_state:
     st.session_state.image = "https://f8n-production.s3.us-east-2.amazonaws.com/collections/awzn1l17u-beach%20relax-export.gif"
 
@@ -33,6 +36,9 @@ if "color" not in st.session_state:
 
 if "screen_dim" not in st.session_state:
     st.session_state.screen_dim = [1920, 1080]
+
+if "selected_video" not in st.session_state:
+    st.session_state.selected_video = ("None","")
 
 zoneinfo = ZoneInfo(st.session_state.timezone)
 dt = datetime.now(zoneinfo)
@@ -98,6 +104,9 @@ background: rgba(0,0,0,0);
 st.markdown(page_bg_img, unsafe_allow_html=True)
 st.markdown(print_m, unsafe_allow_html=True)
 
+
+
+st.markdown(music_player(st.session_state.selected_video[1]), unsafe_allow_html=True)
 
 
 time.sleep(1)
