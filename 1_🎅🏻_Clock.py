@@ -177,7 +177,7 @@ else:
             st.snow()
             play_sound(link="")
             time.sleep(10)
-        image_path = r'C:\Users\ACER\Desktop\streamlit_images\test\images\hours.png'
+        image_path = r'clockino\images\hours.png'
         with open(image_path, "rb") as img_file:
             b64_string = base64.b64encode(img_file.read()).decode()
 
