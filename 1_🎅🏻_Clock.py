@@ -177,12 +177,12 @@ else:
             st.snow()
             play_sound(link="")
             time.sleep(10)
-        image_path = r'clockino\images\hours.png'
-        with open(image_path, "rb") as img_file:
-            b64_string = base64.b64encode(img_file.read()).decode()
+    #     image_path = r'clockino\images\hours.png'
+    #     with open(image_path, "rb") as img_file:
+    #         b64_string = base64.b64encode(img_file.read()).decode()
 
-    # Create a data URL to display the image
-        image_url = f"data:image/png;base64,{b64_string}"
+    # # Create a data URL to display the image
+    #     image_url = f"data:image/png;base64,{b64_string}"
         image_url = r"https://github.com/SamVia/clockino/blob/christmas-clockino/images/hours.png?raw=true"
         st.markdown(clock_hands(hours,minutes, image_url), unsafe_allow_html=True)
         st.markdown(animated_timer(link_colored=st.session_state.color),unsafe_allow_html=True)
