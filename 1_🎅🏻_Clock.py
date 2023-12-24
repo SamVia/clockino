@@ -100,14 +100,18 @@ def animated_timer(link_colored="#721D45", num_divisions=24):
         counter+=1
     html_code += '</div>'
     return html_code
-def clock_hands(hours, minutes, url_hours):
+def clock_hands(hours, minutes, url_hours, url_mins):
     deg_min = minutes * 6
     deg_h = hours * 30 + minutes/2
-    url_mins = "https://clipart-library.com/images/8iEboEy8T.png"
+    
     html_code = f'<img src="{url_hours}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_h+180}deg);">'
     html_code += f'<img src="{url_mins}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_min}deg);">'
     return html_code
-
+if "timeout_h" not in st.session_state:
+    st.session_state.timeout_h = 22
+if "timeout_m" not in st.session_state:
+    st.session_state.timeout_m = 22
+    
 if "selected_video" not in st.session_state:
     st.session_state.selected_video = ("None","")
 
@@ -136,7 +140,10 @@ if "links" not in st.session_state:
         "https://a-static.besthdwallpaper.com/santa-clause-over-the-house-wallpaper-1920x1280-105223_38.jpg",
         "https://i.pinimg.com/originals/d4/85/bc/d485bc64977f6683d5798bca083b8b0a.jpg"
     ]
-    
+if "minute_hand" not in st.session_state:
+    st.session_state.minute_hand = r""
+if "hour_hand" not in st.session_state:
+    st.session_state.hour_hand = r"https://github.com/SamVia/clockino/blob/christmas-clockino/images/hours.png?raw=true"
 if "loaded" not in st.session_state:
     st.session_state.loaded = False
 if "canstart" not in st.session_state:
@@ -172,19 +179,18 @@ else:
             st.rerun()
     else:
         index_bg = minutes//6
-        if hours >= 100:
+        if hours >= st.session_state.timeout_h and minutes >= st.session_state.timeout_m:
             st.balloons()
             st.snow()
-            play_sound(link="")
+            play_sound(link="https://soundboardguy.com/wp-content/uploads/2022/12/santa-clause-ho-ho-ho-sound-effect-professional-and-free-mp3cut-1.mp3")
             time.sleep(10)
-    #     image_path = r'clockino\images\hours.png'
-    #     with open(image_path, "rb") as img_file:
-    #         b64_string = base64.b64encode(img_file.read()).decode()
+        if minutes == 16:
+            play_sound("https://www.myinstants.com/media/sounds/clock-tower-bell_L85zGsl.mp3")
+        if minutes == 18:
+            play_sound("https://www.myinstants.com/media/sounds/bell.mp3")
 
-    # # Create a data URL to display the image
-    #     image_url = f"data:image/png;base64,{b64_string}"
-        image_url = r"https://github.com/SamVia/clockino/blob/christmas-clockino/images/hours.png?raw=true"
-        st.markdown(clock_hands(hours,minutes, image_url), unsafe_allow_html=True)
+        
+        st.markdown(clock_hands(hours,minutes, st.session_state.minute_hand, st.session_state.hour_hand), unsafe_allow_html=True)
         st.markdown(animated_timer(link_colored=st.session_state.color),unsafe_allow_html=True)
         print_m = f"""<div style="
             position: fixed; 

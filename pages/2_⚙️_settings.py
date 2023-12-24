@@ -65,6 +65,10 @@ if "videos" not in st.session_state:
         "Input youtube link":"" 
     }
 
+if "timeout_h" not in st.session_state:
+    st.session_state.timeout_h = 22
+if "timeout_m" not in st.session_state:
+    st.session_state.timeout_m = 22
 
 #function to change format from printable to executable
 def format_funct(val):
@@ -84,7 +88,8 @@ def extract_youtube_id(url):
     if end == -1:
         end = len(url)
     return url[start:end]
-  
+
+
 #save timezone value:
 st.session_state.timezone = st.selectbox("Select Timezone:", st.session_state.timezones, index=get_index(st.session_state.timezone), format_func=format_funct, placeholder="Europe: Italy")
 
@@ -93,6 +98,8 @@ st.session_state.color = st.color_picker("select a color", st.session_state.colo
 st.session_state.screen_dim[0] = st.number_input("select width pixels", min_value=1, value = st.session_state.screen_dim[0])
 st.session_state.screen_dim[1] = st.number_input("select height pixels", min_value=1, value = st.session_state.screen_dim[1])
 
+st.session_state.timeout_h = st.number_input("select hours", min_value=0, value=st.session_state.timeout_h)
+st.session_state.timeout_m = st.number_input("select minutes", min_value=0, value=st.session_state.timeout_m)
 uploaded_file = st.file_uploader("Choose an image...", type=["png", "jpg", "jpeg", "gif"])
 if uploaded_file is not None:
   st.session_state.image = get_image_data_url(uploaded_file.read())
