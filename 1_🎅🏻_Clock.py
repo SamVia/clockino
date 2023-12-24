@@ -184,9 +184,9 @@ else:
             st.snow()
             play_sound(link="https://soundboardguy.com/wp-content/uploads/2022/12/santa-clause-ho-ho-ho-sound-effect-professional-and-free-mp3cut-1.mp3")
             time.sleep(10)
-        if minutes == 16:
+        if minutes == 0:
             play_sound("https://www.myinstants.com/media/sounds/clock-tower-bell_L85zGsl.mp3")
-        if minutes == 18:
+        if minutes == 30:
             play_sound("https://www.myinstants.com/media/sounds/bell.mp3")
 
         
