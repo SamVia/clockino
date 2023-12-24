@@ -104,7 +104,7 @@ def clock_hands(hours, minutes, url_hours, url_mins):
     deg_min = minutes * 6
     deg_h = hours * 30 + minutes/2
     
-    html_code = f'<img src="{url_hours}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_h+180}deg);">'
+    html_code = f'<img src="{url_hours}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_h}deg);">'
     html_code += f'<img src="{url_mins}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_min}deg);">'
     return html_code
 if "timeout_h" not in st.session_state:
