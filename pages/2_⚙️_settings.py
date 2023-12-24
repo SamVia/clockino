@@ -12,6 +12,11 @@ st.title("Settings:")
 hide_st_style = """<style> header {visibility: hidden;} footer {visibility: hidden;} </stile>"""
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
+if "loaded" not in st.session_state:
+    st.session_state.loaded = False
+if "canstart" not in st.session_state:
+    st.session_state.canstart = False    
+
 if "timezone" not in st.session_state:
     st.session_state.timezone = "Europe/Rome"  
 
@@ -115,3 +120,5 @@ with col1:
 
 
 st.session_state.selected_video = (key,st.session_state.videos[key])
+st.session_state.canstart = False
+st.session_state.loaded = False

@@ -6,9 +6,15 @@ import base64
 
 st.set_page_config(
   page_title="Clock",
-  page_icon="🕔"
+  page_icon="🎄"
 )
-
+st.markdown("""
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+        </stile>
+    """, unsafe_allow_html=True)
 
 
 
@@ -25,8 +31,88 @@ def get_image_data_url(img_bytes):
 def music_player(id):
     return f"""<iframe style="display:none;" width="560" height="315" src="https://www.youtube.com/embed/{id}?autoplay=1&loop=1&playlist={id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>"""
 
+def set_bg(link):
+    return f"""
+            <style>
+            [data-testid="stAppViewContainer"] > .main {{
+            background-image: url({link});
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: local;
+            }}
+            [data-testid="stHeader"] {{
+            background: rgba(0,0,0,0);
+            }}
+            </style>
+            """
+
+def generate_dot(angle, color, number=None, width='8px', height='8px', left='198px', top='198px', color_t="white"):
+    return f"""<div class="rectangle" style="
+        width:{width};
+        height: {height};
+        background-color: {color};
+        transform-origin: center;
+        border: 1px solid rgba(0,0,0,0.1);
+        position: absolute;
+        left:{left};
+        top:{top};
+        border-radius:50%;
+        transform: rotate({angle-90}deg) translate(200px) rotate(100deg);
+    "></div>"""
+
+def play_sound(link):
+    html_string = f"""
+            <audio autoplay>
+              <source src="{link}" type="audio/mp3">
+            </audio>
+            """
+    st.markdown(html_string, unsafe_allow_html=True)
+
+def generate_number(angle, color, number=None, width='8px', height='16px', left='190px', top='190px', color_t="white"):
+    css = f"""<div class="rectangle" style="
+        width:24px;
+        height: 24px;
+        background-color: {color};
+        transform-origin: center;
+        border: 1px solid rgba(0,0,0,0.1);
+        position: absolute;
+        left:{left};
+        top:{top};
+        border-radius:3px;
+        transform: rotate({angle-90}deg) translate(200px) rotate(90deg);
+    ">"""
+    if number is not None:
+        css += f'<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight:bold; font-size:60px; color: {color_t};">{number}</div>'
+    css += '</div>'
+    return css
+
+
+
+def animated_timer(link_colored="#721D45", num_divisions=24):
+    html_code = f'<div class="circle" style="position: fixed;top:50%;left:50%; width: 400px; height: 400px; border-radius: 50%; border: 1px transparent;transform: translate(-50%, -30%);">'
+    counter = 0
+    for i in range(1, num_divisions+1, 2):
+        angle = (i) * (360 / num_divisions)
+        html_code += generate_dot(angle, color_t = link_colored, color= "white",number=None)
+        angle = (i+1) * (360 / num_divisions)
+        html_code += generate_number(angle, color_t = link_colored, color = "transparent", number=i-counter)
+        counter+=1
+    html_code += '</div>'
+    return html_code
+def clock_hands(hours, minutes, url_hours):
+    deg_min = minutes * 6
+    deg_h = hours * 30 + minutes/2
+    url_mins = "https://clipart-library.com/images/8iEboEy8T.png"
+    html_code = f'<img src="{url_hours}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_h+180}deg);">'
+    html_code += f'<img src="{url_mins}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_min}deg);">'
+    return html_code
+
+if "selected_video" not in st.session_state:
+    st.session_state.selected_video = ("None","")
+
 if "image" not in st.session_state:
-    st.session_state.image = "https://f8n-production.s3.us-east-2.amazonaws.com/collections/awzn1l17u-beach%20relax-export.gif"
+    st.session_state.image = "https://a-static.besthdwallpaper.com/santa-clause-over-the-house-wallpaper-1920x1280-105223_38.jpg"
 
 if "timezone" not in st.session_state:
     st.session_state.timezone = "Europe/Rome"    
@@ -37,77 +123,88 @@ if "color" not in st.session_state:
 if "screen_dim" not in st.session_state:
     st.session_state.screen_dim = [1920, 1080]
 
-if "selected_video" not in st.session_state:
-    st.session_state.selected_video = ("None","")
-
-zoneinfo = ZoneInfo(st.session_state.timezone)
-dt = datetime.now(zoneinfo)
-
-time_to_print = dt.strftime("%H:%M:%S")
-date_to_print = dt.strftime("%a %d/%m/%Y")
+if "links" not in st.session_state:
+    st.session_state.links = [
+        "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a2205e2c-52eb-46b3-89fb-bd0fd5da780e/dbyn08r-83e1c070-bfa6-48da-ae25-b7d7409639fe.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2EyMjA1ZTJjLTUyZWItNDZiMy04OWZiLWJkMGZkNWRhNzgwZVwvZGJ5bjA4ci04M2UxYzA3MC1iZmE2LTQ4ZGEtYWUyNS1iN2Q3NDA5NjM5ZmUuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.pFhMtU06SUSgNo6CA5fLFNJlv9h69s9oE89E2E6iAGk",
+        "https://www.icegif.com/wp-content/uploads/snow-icegif-29.gif",
+        "https://images3.alphacoders.com/129/1295531.jpg",
+        "https://wallpaperset.com/w/full/0/0/1/94197.jpg",
+        "https://cutewallpaper.org/23/christmas-snow-live-wallpaper/2297917019.jpg",      
+        "https://wallpapers.com/images/featured/3d-christmas-bw37ez6p9clxblpj.jpg",
+        "https://cutewallpaper.org/37x/7p7o4oi8x/187265578.jpg",
+        "https://www.teahub.io/photos/full/26-266600_christmas-snow-lantern-4k-ultra-hd-desktop-wallpaper.jpg",
+        "https://a-static.besthdwallpaper.com/santa-clause-over-the-house-wallpaper-1920x1280-105223_38.jpg",
+        "https://i.pinimg.com/originals/d4/85/bc/d485bc64977f6683d5798bca083b8b0a.jpg"
+    ]
     
-st.title("")
-
-hide_st_style = """
-    <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </stile>
-"""
-date_pix = int(3.25*st.session_state.screen_dim[1]/100)
-date_left = int(st.session_state.screen_dim[0]*0.16)
-date_up =  int(st.session_state.screen_dim[1]*0.01)
-
-time_pix = int(9.25*st.session_state.screen_dim[1]/100)
-
-st_title = f"""
-<div style="position: absolute; top: {date_up}px; left: -{date_left}px; height: 100px; font-size: {date_pix}px; font-weight: bold; color: {st.session_state.color}">
-    {date_to_print}
-</div>
-"""
-
-print_m = f"""
-    <div style="display: grid; place-items: center; height: center; padding-top: 7%;">
-        <div style="font-size: {time_pix}px; font-weight: bold; color: {st.session_state.color};">
-            {time_to_print}
-        </div>
-    </div>
-    """
-st.markdown(st_title, unsafe_allow_html=True)
-st.markdown(hide_st_style, unsafe_allow_html=True)
-
-page_bg_img = f"""
-<style>
-[data-testid="stAppViewContainer"] > .main {{
-background-image: url({st.session_state.image});
-background-size: 100% auto;
-background-position: center center;
-background-repeat: no-repeat;
-background-attachment: local;
-
-}}
-[data-testid="stHeader"] {{
-background: rgba(0,0,0,0);
-}}
-</style>
-"""
-
-
-
-# print_m = f"""
-#     <div style="display: flex; justify-content: center; align-items: center; width: {st.session_state.screen_dim[0]}px; height: {st.session_state.screen_dim[1]}px; font-size: 100px; font-weight: bold; color: {st.session_state.color}">
-#         {time_to_print}
-#     </div>
-#     """
-
-st.markdown(page_bg_img, unsafe_allow_html=True)
-st.markdown(print_m, unsafe_allow_html=True)
-
-
-
+if "loaded" not in st.session_state:
+    st.session_state.loaded = False
+if "canstart" not in st.session_state:
+    st.session_state.canstart = False    
+    
 st.markdown(music_player(st.session_state.selected_video[1]), unsafe_allow_html=True)
+if not st.session_state.loaded:
+    empty = st.empty()
+    if empty.button("load images"):
+        for i in range(len(st.session_state.links)):
+            empty.markdown(set_bg(st.session_state.links[i]), unsafe_allow_html=True)
+            time.sleep(1)
+        empty.empty()
+        st.session_state.loaded = True
+        st.rerun()
+else:
+    
+        
+    zoneinfo = ZoneInfo(st.session_state.timezone)
+    dt = datetime.now(zoneinfo)
+    time_to_print = dt.strftime("%H:%M:%S")
+    get_time = time_to_print.split(":")
+    seconds = int(get_time[2])
+    minutes = int(get_time[1])
+    hours = int(get_time[0])
+    time_to_print= "{:02d}:{:02d}".format(hours, minutes)
+    if not st.session_state.canstart:
+        if seconds < 5:
+            st.session_state.canstart = True
+            st.rerun()
+        else:
+            time.sleep(1)
+            st.rerun()
+    else:
+        index_bg = minutes//6
+        if hours >= 100:
+            st.balloons()
+            st.snow()
+            play_sound(link="")
+            time.sleep(10)
+        image_path = r'C:\Users\ACER\Desktop\streamlit_images\test\images\hours.png'
+        with open(image_path, "rb") as img_file:
+            b64_string = base64.b64encode(img_file.read()).decode()
+
+    # Create a data URL to display the image
+        image_url = f"data:image/png;base64,{b64_string}"
+        st.markdown(clock_hands(hours,minutes, image_url), unsafe_allow_html=True)
+        st.markdown(animated_timer(link_colored=st.session_state.color),unsafe_allow_html=True)
+        print_m = f"""<div style="
+            position: fixed; 
+            top: 20%; 
+            left: 50%;
+            transform: translate(-50%,-50%); 
+            color: {st.session_state.color}; 
+            font-size: 75px; 
+            font-weight:bold; 
+            z-index: 2;">
+            {time_to_print}
+            </div>"""
+        st.markdown(print_m, unsafe_allow_html=True)
 
 
-time.sleep(1)
-st.rerun()
+        st.markdown(set_bg(st.session_state.links[index_bg]), unsafe_allow_html=True)
+
+
+
+
+        
+
+        time.sleep(20)
+        st.rerun()
