@@ -103,9 +103,9 @@ def animated_timer(link_colored="#721D45", num_divisions=24):
 def clock_hands(hours, minutes, url_hours, url_mins):
     deg_min = minutes * 6
     deg_h = hours * 30 + minutes/2
+    html_code = f'<img src="{url_mins}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_min}deg);">'
+    html_code += f'<img src="{url_hours}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_h}deg);">'
     
-    html_code = f'<img src="{url_hours}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_h}deg);">'
-    html_code += f'<img src="{url_mins}" style="width: 400px; height: 400px;background-color:transparent; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -30%) rotate({deg_min}deg);">'
     return html_code
 if "timeout_h" not in st.session_state:
     st.session_state.timeout_h = 22
@@ -190,7 +190,7 @@ else:
             play_sound("https://www.myinstants.com/media/sounds/bell.mp3")
 
         
-        st.markdown(clock_hands(hours,minutes, st.session_state.minute_hand, st.session_state.hour_hand), unsafe_allow_html=True)
+        st.markdown(clock_hands(hours,minutes, url_mins=st.session_state.minute_hand, url_hours=st.session_state.hour_hand), unsafe_allow_html=True)
         st.markdown(animated_timer(link_colored=st.session_state.color),unsafe_allow_html=True)
         print_m = f"""<div style="
             position: fixed; 
