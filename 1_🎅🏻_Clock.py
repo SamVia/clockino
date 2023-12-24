@@ -141,7 +141,7 @@ if "links" not in st.session_state:
         "https://i.pinimg.com/originals/d4/85/bc/d485bc64977f6683d5798bca083b8b0a.jpg"
     ]
 if "minute_hand" not in st.session_state:
-    st.session_state.minute_hand = r""
+    st.session_state.minute_hand = r"https://github.com/SamVia/clockino/blob/christmas-clockino/images/minutes.png?raw=true"
 if "hour_hand" not in st.session_state:
     st.session_state.hour_hand = r"https://github.com/SamVia/clockino/blob/christmas-clockino/images/hours.png?raw=true"
 if "loaded" not in st.session_state:
