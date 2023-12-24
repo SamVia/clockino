@@ -148,11 +148,37 @@ if "loaded" not in st.session_state:
     st.session_state.loaded = False
 if "canstart" not in st.session_state:
     st.session_state.canstart = False    
-    
+if "img_button" not in st.session_state:
+    st.session_state.img_button = "https://www.pngkey.com/png/detail/0-6527_christmas-santa-face-transparent-background-png-christmas-day.png"
+
+
+
 st.markdown(music_player(st.session_state.selected_video[1]), unsafe_allow_html=True)
 if not st.session_state.loaded:
+    st.markdown(f"""<style>
+    div.stButton > button:first-child {{
+        height: 220px;
+        width: 220px;
+        background-color: transparent;
+        background-image: url('{st.session_state.img_button}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-color: transparent;
+        position: fixed; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        border-radius: 50%;
+        z-index: 0;
+        transition: transform 0.3s ease-in-out;
+    }}
+    div.stButton > button:first-child:hover {{
+        transform: translate(-50%, -50%) scale(1.1);
+    }}
+</style>""", unsafe_allow_html=True)
+    st.markdown(set_bg("https://png.pngtree.com/thumb_back/fh260/background/20231127/pngtree-christmas-background-of-santa-claus-with-reindeer-and-snowflake-in-winter-image_15319316.jpg"), unsafe_allow_html=True)
     empty = st.empty()
-    if empty.button("load images"):
+    if empty.button(" "):
         for i in range(len(st.session_state.links)):
             empty.markdown(set_bg(st.session_state.links[i]), unsafe_allow_html=True)
             time.sleep(1)
