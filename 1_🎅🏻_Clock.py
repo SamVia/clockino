@@ -75,7 +75,7 @@ def generate_number(angle, color, number=None, width='8px', height='16px', left=
         height: 24px;
         background-color: {color};
         transform-origin: center;
-        border: 1px solid rgba(0,0,0,0.1);
+        border: 1px transparent;
         position: absolute;
         left:{left};
         top:{top};
