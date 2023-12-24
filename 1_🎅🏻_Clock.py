@@ -183,6 +183,7 @@ else:
 
     # Create a data URL to display the image
         image_url = f"data:image/png;base64,{b64_string}"
+        image_url = r"https://github.com/SamVia/clockino/blob/christmas-clockino/images/hours.png?raw=true"
         st.markdown(clock_hands(hours,minutes, image_url), unsafe_allow_html=True)
         st.markdown(animated_timer(link_colored=st.session_state.color),unsafe_allow_html=True)
         print_m = f"""<div style="
