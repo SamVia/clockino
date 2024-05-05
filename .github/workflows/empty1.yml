@@ -1,8 +1,8 @@
-name: Create Empty Commits
+name: Create Empty Commit
 
 on:
   schedule:
-    - cron:  '30 15 * * *'
+    - cron:  '50 15 * * *'
 
 jobs:
   build:
@@ -12,19 +12,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup Git
+    - name: Create empty commit
       run: |
         git config --global user.name 'SamVia'
         git config --global user.email 'samuele.vianello2002@gmail.com'
-
-    - name: Create empty commit on main
-      run: |
-        git checkout main
-        git commit --allow-empty -m "Empty commit on main"
-        git push origin main
-
-    - name: Create empty commit on other branch
-      run: |
-        git checkout christmas-clockino
-        git commit --allow-empty -m "Empty commit on christmas-clockino"
-        git push origin christmas-clockino
+        git commit --allow-empty -m "Empty commit"
+        git push
